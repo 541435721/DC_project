@@ -1,0 +1,436 @@
+{% extends 'user.html' %}
+{% block title %}
+    折线图
+{% endblock %}
+{% block right_content %}
+    <div class="content-page">
+        <!-- Start content -->
+        <div class="content">
+            <div class="am-g">
+                <div class="am-u-md-6">
+                    <!-- 折线图堆叠 -->
+                    <div class="card-box">
+                        <div id="Stack" style="width: 100%;height: 250px;"></div>
+                    </div>
+                </div>
+
+                <div class="am-u-md-6">
+                    <!-- 堆叠区域图  -->
+                    <div class="card-box">
+                        <div id="area" style="width: 100%;height: 250px;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="am-g">
+                <div class="am-u-md-6">
+                    <!-- Step Line -->
+                    <div class="card-box">
+                        <div id="step" style="width: 100%;height: 250px;"></div>
+                    </div>
+                </div>
+
+                <div class="am-u-md-6">
+                    <!-- 大数据面积图  -->
+                    <div class="card-box">
+                        <div id="shuju" style="width: 100%;height: 250px;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="am-g">
+                <div class="am-u-md-12">
+                    <!-- 动态数据+时间坐标轴 -->
+                    <div class="card-box">
+                        <div id="trends" style="width: 100%;height: 300px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        (function () {
+            var myChart = echarts.init(document.getElementById("index-pie-1"));
+            var records ={{ shopping_records|safe }};
+            option = {
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                legend: {
+                    orient: 'vertical',
+                    x: 'left',
+                    data: ['POS消费', '水控消费', '车载消费', '余额转移', '支付交易', '圈存转账', '喜付电控转账', 'POS消费冲正', '交易冲正']
+                },
+                toolbox: {
+                    show: true,
+                    feature: {
+                        mark: {show: true},
+                        dataView: {show: true, readOnly: false},
+                        magicType: {
+                            show: true,
+                            type: ['pie', 'funnel'],
+                            option: {
+                                funnel: {
+                                    x: '25%',
+                                    width: '50%',
+                                    funnelAlign: 'center',
+                                    max: 1548
+                                }
+                            }
+                        },
+                        restore: {show: true},
+                        saveAsImage: {show: true}
+                    }
+                },
+                calculable: true,
+                series: [
+                    {
+                        name: '消费方式',
+                        type: 'pie',
+                        radius: ['50%', '70%'],
+                        itemStyle: {
+                            normal: {
+                                label: {
+                                    show: false
+                                },
+                                labelLine: {
+                                    show: false
+                                }
+                            },
+                            emphasis: {
+                                label: {
+                                    show: true,
+                                    position: 'center',
+                                    textStyle: {
+                                        fontSize: '20',
+                                        fontWeight: 'bold'
+                                    }
+                                }
+                            }
+                        },
+                        data: [
+                            {value: records[0], name: 'POS消费'},
+                            {value: records[1], name: '水控消费'},
+                            {value: records[2], name: '车载消费'},
+                            {value: records[3], name: '余额转移'},
+                            {value: records[4], name: '支付交易'},
+                            {value: records[5], name: '圈存转账'},
+                            {value: records[6], name: '喜付电控转账'},
+                            {value: records[7], name: 'POS消费冲正'},
+                            {value: records[8], name: '交易冲正'}
+                        ]
+                    }
+                ]
+            };
+
+
+            myChart.setOption(option);
+        })();
+
+        (function () {
+            var myChart = echarts.init(document.getElementById("index-bar-1"));
+            var records ={{ shopping_records|safe }};
+            option = {
+                color: ['#3398DB'],
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                        type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                    }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日'],
+                        axisTick: {
+                            alignWithLabel: true
+                        }
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value'
+                    }
+                ],
+                series: [
+                    {
+                        name: '阅读量',
+                        type: 'bar',
+                        barWidth: '60%',
+                        data: [10, 52, 200, 334, 390, 330, 220]
+                    }
+                ]
+            };
+
+
+            myChart.setOption(option);
+        })();
+
+        (function () {
+            var myChart = echarts.init(document.getElementById("widget-chart-box-1"));
+            var myChart2 = echarts.init(document.getElementById("widget-chart-box-2"));
+            var record1 = {{ all_costs }};
+            var record2 = {{ today_costs }};
+            var record3 = {{ income }};
+            var record4 = {{ today_income }};
+
+            var labelTop = {
+
+                normal: {
+                    label: {
+                        show: true,
+                        position: 'center',
+                        formatter: '{b}',
+                        textStyle: {
+                            baseline: 'bottom'
+                        }
+                    },
+                    labelLine: {
+                        show: false
+                    }
+
+                }
+            };
+            var labelFromatter = {
+                normal: {
+                    label: {
+                        formatter: function (params) {
+                            return 100 - params.value + '%'
+                        },
+                        textStyle: {
+                            baseline: 'center'
+                        }
+                    }
+                },
+            }
+            var labelBottom = {
+                normal: {
+                    color: '#ccc',
+                    label: {
+                        show: true,
+                        position: 'center'
+                    },
+                    labelLine: {
+                        show: false
+                    }
+                },
+                emphasis: {
+                    color: '#ccc'
+                }
+            };
+            var radius = [40, 35];
+            option1 = {
+
+
+                legend: {
+                    x: 'center',
+                    y: 'center',
+
+                },
+
+                grid: {
+                    x: 0,
+                    y: 0,
+                    x2: 0,
+                    y2: 0
+                },
+
+                toolbox: {
+                    show: true,
+                    feature: {
+                        magicType: {
+                            show: true,
+                            type: ['pie', 'funnel'],
+                            option: {
+                                funnel: {
+                                    width: '20%',
+                                    height: '30%',
+                                    itemStyle: {
+                                        normal: {
+                                            label: {
+                                                formatter: function (params) {
+                                                    return 'other\n' + params.value + '%\n'
+                                                },
+                                                textStyle: {
+                                                    baseline: 'middle'
+                                                }
+                                            }
+                                        },
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                },
+                series: [
+                    {
+                        type: 'pie',
+
+                        radius: radius,
+                        x: '0%', // for funnel
+                        itemStyle: labelFromatter,
+                        data: [
+                            {name: 'other', value: record1 / (record1 + record2), itemStyle: labelBottom},
+                            {name: '', value: record2 / (record1 + record2), itemStyle: labelTop}
+                        ]
+                    }
+
+                ],
+                animation: false
+            };
+            option2 = {
+
+
+                legend: {
+                    x: 'center',
+                    y: 'center',
+
+                },
+
+                grid: {
+                    x: 0,
+                    y: 0,
+                    x2: 0,
+                    y2: 0
+                },
+
+                toolbox: {
+                    show: true,
+                    feature: {
+                        magicType: {
+                            show: true,
+                            type: ['pie', 'funnel'],
+                            option: {
+                                funnel: {
+                                    width: '20%',
+                                    height: '30%',
+                                    itemStyle: {
+                                        normal: {
+                                            label: {
+                                                formatter: function (params) {
+                                                    return 'other\n' + params.value + '%\n'
+                                                },
+                                                textStyle: {
+                                                    baseline: 'middle'
+                                                }
+                                            }
+                                        },
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                },
+                series: [
+                    {
+                        type: 'pie',
+
+                        radius: radius,
+                        x: '0%', // for funnel
+                        itemStyle: labelFromatter,
+                        data: [
+                            {name: 'other', value: record3 / (record3 + record4), itemStyle: labelBottom},
+                            {name: '', value: record4 / (record3 + record4), itemStyle: labelTop}
+                        ]
+                    }
+
+                ],
+                animation: false
+            };
+
+            myChart.setOption(option1);
+            myChart2.setOption(option2);
+        })();
+
+        (function () {
+            var myChart = echarts.init(document.getElementById("index-line-1"));
+            cost = {{ week_cost|safe }};
+            income ={{ week_income|safe }};
+            option = {
+
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data: ['收入', '支出'],
+                    x: "right"
+                },
+
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLabel: {
+                        formatter: '￥{value}'
+                    }
+                },
+                series: [
+                    {
+                        name: '收入',
+                        type: 'line',
+                        data: income,
+                        markPoint: {
+                            data: [
+                                {type: 'max', name: '最大值'},
+                                {type: 'min', name: '最小值'}
+                            ]
+                        },
+                        markLine: {
+                            data: [
+                                {type: 'average', name: '平均值'}
+                            ]
+                        }
+                    },
+                    {
+                        name: '支出',
+                        type: 'line',
+                        data: cost,
+                        {#                    markPoint: {#}
+                        {#                        data: [#}
+                        {#                            {name: '周最低', value: -2, xAxis: 1, yAxis: -1.5}#}
+                        {#                        ]#}
+                        {#                    },#}
+                        markLine: {
+                            data: [
+                                {type: 'average', name: '平均值'},
+                                [{
+                                    symbol: 'none',
+                                    x: '90%',
+                                    yAxis: 'max'
+                                }, {
+                                    symbol: 'circle',
+                                    label: {
+                                        normal: {
+                                            position: 'start',
+                                            formatter: '最大值'
+                                        }
+                                    },
+                                    type: 'max',
+                                    name: '最高点'
+                                }]
+                            ]
+                        }
+                    }
+                ]
+            };
+
+
+            myChart.setOption(option);
+        })();
+    </script>
+{% endblock %}

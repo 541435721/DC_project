@@ -1,0 +1,367 @@
+{% load staticfiles %}
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <title>智慧校园</title>
+    <link rel="stylesheet" href="{% static 'home/css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'home/css/animation.css' %}">
+    <link rel="stylesheet" href="{% static 'home/css/response.css' %}">
+    <link rel="stylesheet" href="{% static 'home/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'home/css/iconfont.css' %}">
+    <script src="{% static 'home/js/jquery.js' %}"></script>
+    <script src="{% static 'home/js/touch.js' %}"></script>
+    <script src="{% static 'home/js/index.js' %}"></script>
+    <style>
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            padding: 12px 16px;
+            z-index: 1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+    </style>
+
+</head>
+<body style="overflow: hidden">
+<!--头部-->
+<header>
+    <div class="header">
+        <div class="container">
+            <div class="row">
+                <div class="col-m-2 col-s-5 co0"></div>
+                <div class="san col-m-hide col-s-5 col-l-hide coa">三</div>
+                <div class="col-m-1 col-s-hide co1"><a href="#">首页</a></div>
+                <div class="col-m-1 col-s-hide co2"><a href="#">产品介绍</a></div>
+                {#                <div class="col-m-1 col-s-hide co3"><a href="#">用户版</a></div>#}
+                <div class="col-m-1 col-s-hide co4"><a href="#"></a></div>
+                {#                <div class="col-m-1 col-s-hide co5"><a href="#">手机客户端</a></div>#}
+                {#                <div class="col-m-1 col-s-hide co6"><a href="#">百度司南</a></div>#}
+                <div class="col-m-1 col-s-hide co5"><a href="http://www.cssmoban.com" target="_blank">联系我们</a></div>
+                {% if request.user.is_authenticated %}
+                    <div class="col-m-1 col-s-hide co6"><a href='{% url 'user_center' %}'>个人中心</a></div>
+                    <div class="col-m-1 col-s-hide co7"><a href='{% url 'logout' %}'>注销登录</a></div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div class="out">
+    <div class="box1 box">
+        <div class="dyun">
+            <div class="yun1"></div>
+            <div class="yun2"></div>
+        </div>
+        <div class="zyun">
+            <div class="yun1"></div>
+            <div class="yun2"></div>
+        </div>
+        <div class="xyun">
+            <div class="yun1"></div>
+            <div class="yun2"></div>
+        </div>
+
+        <div class="container" style="position: relative; z-index: 5">
+            <div class="row">
+                <!--左-->
+                <div class="col-m-5 col-s-hide left" style="height: 100%;">
+                    <div class="left1"></div>
+                    <div class="fly"></div>
+                    <div class="ship"></div>
+                    <div class="hill1"></div>
+
+                </div>
+
+                <!--右-->
+                <div class="col-m-5 col-s-10 right " style="height: 100%;">
+                    {% if not request.user.is_authenticated %}
+                        <div class="right1"> {# 登录 #}
+                            <div class="login-box">
+                                <div class="box-con tran">
+                                    <div class="login-con f-l">
+                                        <form id="login_form" method='post' action="/login/">
+                                            {% csrf_token %}
+                                            <div class="form-group">
+                                                {{ form1.user_id }}
+                                                <span class="error-notic">邮箱/手机号码不正确</span>
+                                            </div>
+                                            <div class="form-group">
+                                                {{ form1.pass_word }}
+                                                <span class="error-notic">密码不正确</span>
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="submit" class="tran pr">
+                                                    <a href="javascript:document.getElementById('login_form').submit()"
+                                                       class="tran">登录</a>
+                                                </button>
+                                            </div>
+                                        </form>
+                                        <div class="from-line"></div>
+                                        <div class="form-group">
+                                            <a href="javascript:;" class="move-signup a-tag tran blue-border">还没有帐号？免费注册<i
+                                                    class="iconfont tran">&#xe606;</i></a>
+                                        </div>
+                                    </div>
+                                    <!-- 登录 -->
+
+                                    <div class="signup f-l">
+                                        <form id="regist_form" method='post' action="/regist/">
+                                            {% csrf_token %}
+                                            <div class="signup-email">
+                                                <div class="form-group">
+                                                    {{ form2.user_id }}
+                                                </div>
+                                                <div class="form-group">
+                                                    {{ form2.pass_word }}
+                                                    {#                                            <span class="error-notic">密码长度不够</span>#}
+                                                </div>
+                                                <div class="form-group">
+                                                    {{ form2.re_pass_word }}
+                                                    {#                                            <span class="error-notic">密码长度不够</span>#}
+                                                </div>
+                                                <div class="form-group">
+                                                    <button type="submit" class="tran pr">
+                                                        <a href="javascript:document.getElementById('regist_form').submit()"
+                                                           class="tran">注册</a>
+                                                        <img class="loading" src="{% static 'home/img/loading.gif' %}">
+                                                    </button>
+                                                </div>
+
+                                            </div><!-- 邮箱注册 -->
+                                        </form>
+                                        <div class="signup-tel" style="display:none">
+                                            <div class="signup-form" id="message-inf" style="display:none">
+                                                <input type="text" placeholder="短信验证码" style="width:180px;"
+                                                       onblur="verify.VerifyCount(this)">
+                                                <a href="javascript:;" class="reacquire">重新获取（59）</a>
+                                                <span class="error-notic">验证码输入错误</span>
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="submit" class="tran get-message pr">
+                                                    <a href="javascript:;" class="tran">获取短信验证码</a>
+                                                    <img class="loading" src="{% static 'home/img/loading.gif' %}">
+                                                </button>
+                                            </div>
+                                        </div><!-- 手机号码注册 -->
+                                        <div class="from-line"></div>
+                                        <div class="form-group">
+                                            <a href="javascript:;" class="move-login a-tag tran blue-border">已有帐号？登录<i
+                                                    class="iconfont tran">&#xe606;</i></a>
+                                        </div>
+                                    </div>
+                                    <!-- 注册 -->
+
+                                </div>
+                            </div>
+
+                        </div>
+                    {% endif %}
+                    <div class="hill2"></div>
+                    <div class="hill3"></div>
+                </div>
+
+            </div>
+        </div>
+        <div class="bottom">
+            <div class="x_btn"></div>
+        </div>
+
+    </div>
+    <div class="copyrights">Collect from <a href="http://www.cssmoban.com/">企业网站模板</a></div>
+    <div class="box2 box">
+        <div class="container">
+            <div class="row">
+                <div class="col-m-5 col-s-10  ll">
+                    <div class="ling"></div>
+                    <div class="ling1"></div>
+                    <div class="sq1"></div>
+                    <div class="sq2"></div>
+                    <div class="sq3"></div>
+                </div>
+                <div class="col-m-5 col-s-hide rr">
+                    <div class="brain"></div>
+                    <div class="sq4"></div>
+                    <div class="sq5"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box3 box" style="position: relative">
+        <div class="container">
+            <div class="row">
+                <div class="col-l-5 col-s-10 ll">
+                    <div class="quan"></div>
+                    <div class="quan1"></div>
+                    <div class="cq1"></div>
+                    <div class="cq2"></div>
+                    <div class="cq3"></div>
+                    <div class="cq4"></div>
+                    <div class="cq5"></div>
+                </div>
+                <div class="col-l-5 col-s-hide rr">
+                    <div class="all"></div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom1"></div>
+    </div>
+    <div class="box4 box" style="position: relative">
+        <div class="container">
+            <div class="row">
+                <div class="col-m-5 col-s-10 ll">
+                    <div class="zhuan"></div>
+                    <div class="zhuan1"></div>
+                    <div class="zhuan2"></div>
+                </div>
+                <div class="col-m-5 col-s-hide rr">
+                    <div class="zhuan3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="btn">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</div>
+</body>
+<script>
+    var _handle = '';//储存电话是否填写正确
+
+    $(function () {
+        $(".signup-form input").on("focus", function () {
+            $(this).parent().addClass("border");
+        });
+        $(".signup-form input").on("blur", function () {
+            $(this).parent().removeClass("border");
+        })
+        //注册方式切换
+        $(".signup-select").on("click", function () {
+            var _text = $(this).text();
+            var $_input = $(this).prev();
+            $_input.val('');
+            if (_text == "手机注册") {
+                $(".signup-tel").fadeIn(200);
+                $(".signup-email").fadeOut(180);
+                $(this).text("邮箱注册");
+                $_input.attr("placeholder", "手机号码");
+                $_input.attr("onblur", "verify.verifyMobile(this)");
+                $(this).parents(".form-group").find(".error-notic").text("手机号码格式不正确")
+
+            }
+            if (_text == "邮箱注册") {
+                $(".signup-tel").fadeOut(180);
+                $(".signup-email").fadeIn(200);
+                $(this).text("手机注册");
+                $_input.attr("placeholder", "邮箱");
+                $_input.attr("onblur", "verify.verifyEmail(this)");
+                $(this).parents(".form-group").find(".error-notic").text("邮箱格式不正确")
+            }
+        });
+        //步骤切换
+        var _boxCon = $(".box-con");
+        $(".move-login").on("click", function () {
+            $(_boxCon).css({
+                'marginLeft': 0
+            })
+        });
+        $(".move-signup").on("click", function () {
+            $(_boxCon).css({
+                'marginLeft': -320
+            })
+        });
+        $(".move-other").on("click", function () {
+            $(_boxCon).css({
+                'marginLeft': -640
+            })
+        });
+        $(".move-reset").on("click", function () {
+            $(_boxCon).css({
+                'marginLeft': -960
+            })
+        });
+        $("body").on("click", ".move-addinf", function () {
+            $(_boxCon).css({
+                'marginLeft': -1280
+            })
+        });
+
+        //获取短信验证码
+        var messageVerify = function () {
+            $(".get-message").on("click", function () {
+                if (_handle) {
+                    $("#message-inf").fadeIn(100)
+                    $(this).html('<a href="javascript:;">下一步</a><img class="loading" src="{% static 'home/img/loading.gif'%}">').addClass("move-addinf");
+                }
+            });
+        }();
+    });
+
+    //表单验证
+    function showNotic(_this) {
+        $(_this).parents(".form-group").find(".error-notic").fadeIn(100);
+        $(_this).focus();
+    }//错误提示显示
+    function hideNotic(_this) {
+        $(_this).parents(".form-group").find(".error-notic").fadeOut(100);
+    }//错误提示隐藏
+    var verify = {
+        verifyEmail: function (_this) {
+            var validateReg = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+            var _value = $(_this).val();
+            if (!validateReg.test(_value)) {
+                showNotic(_this)
+            } else {
+                hideNotic(_this)
+            }
+        },//验证邮箱
+        verifyMobile: function (_this) {
+            var validateReg = /^((\+?86)|(\(\+86\)))?1\d{10}$/;
+            var _value = $(_this).val();
+            if (!validateReg.test(_value)) {
+                showNotic(_this);
+                _handle = false;
+            } else {
+                hideNotic(_this);
+                _handle = true;
+            }
+            return _handle
+        },//验证手机号码
+        PasswordLenght: function (_this) {
+            var _length = $(_this).val().length;
+            if (_length < 6) {
+                showNotic(_this)
+            } else {
+                hideNotic(_this)
+            }
+        },//验证设置密码长度
+        VerifyCount: function (_this) {
+            var _count = "123456";
+            var _value = $(_this).val();
+            console.log(_value)
+            if (_value != _count) {
+                showNotic(_this)
+            } else {
+                hideNotic(_this)
+            }
+        }//验证验证码
+    }
+</script>
+</html>
