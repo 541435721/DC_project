@@ -52,7 +52,7 @@
                 {#                <div class="col-m-1 col-s-hide co6"><a href="#">百度司南</a></div>#}
                 <div class="col-m-1 col-s-hide co5"><a href="http://www.cssmoban.com" target="_blank">联系我们</a></div>
                 {% if request.user.is_authenticated %}
-                    <div class="col-m-1 col-s-hide co6"><a href='{% url 'user_center' %}'>个人中心</a></div>
+                    <div class="col-m-1 col-s-hide co6"><a href='{% url 'welcome' %}'>个人中心</a></div>
                     <div class="col-m-1 col-s-hide co7"><a href='{% url 'logout' %}'>注销登录</a></div>
                 {% endif %}
             </div>
@@ -182,7 +182,6 @@
         </div>
 
     </div>
-    <div class="copyrights">Collect from <a href="http://www.cssmoban.com/">企业网站模板</a></div>
     <div class="box2 box">
         <div class="container">
             <div class="row">

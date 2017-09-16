@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from django.utils.timezone import now, timedelta
 import datetime
-from django.db.models import Avg, Sum, Count
+from django.db.models import Avg, Sum, Count, Aggregate
 from DC import models
 import json
 
@@ -37,7 +37,7 @@ def login(request):  # 登录
             try:
                 user = auth.authenticate(username=username, password=password)
                 auth.login(request, user)  # 用户登录
-                return redirect('/user/')
+                return redirect('/welcome/')
             except:
                 pass
         else:
@@ -135,6 +135,64 @@ def user(request):
 
 
 @is_login
+def welcome(request):
+    params = {'user_name': request.user,
+              }
+
+    return render(request, 'html/welcome.html', params)
+
+
+@is_login
+def message_table(request):
+    params = {'user_name': request.user,
+              'messages': None}
+    records = models.Messages.objects.filter(user_id=request.user)
+    params['messages'] = records
+    return render(request, 'html/message_table.html', params)
+
+
+@is_login
+def message_chart(request):
+    params = {'user_name': request.user,
+              }
+
+    return render(request, 'html/job_chart.html', params)
+
+
+@is_login
+def job_table(request):
+    params = {'user_name': request.user,
+              'address': None,
+              'salary': None}
+    records1 = models.Job.objects.exclude(address='').values('address').annotate(Count('address'))
+    records2 = models.Job.objects.exclude(salary=None).values('salary').annotate(Count('salary'))
+    params['address'] = records1
+    params['salary'] = records2
+    return render(request, 'html/job_table.html', params)
+
+
+@is_login
+def job_chart(request):
+    params = {'user_name': request.user,
+              }
+    return render(request, 'html/job_chart.html', params)
+
+
+@is_login
+def shop_table(request):
+    params = {'user_name': request.user,
+              }
+    return render(request, 'html/message_table.html', params)
+
+
+@is_login
+def shop_chart(request):
+    params = {'user_name': request.user,
+              }
+    return render(request, 'html/message_chart.html', params)
+
+
+@is_login
 def basic_table(request):
     params = {'user_name': request.user,
               'income': 0,
@@ -144,7 +202,7 @@ def basic_table(request):
               'shopping_records': None,
               'week_cost': None,
               'week_income': None, }
-    return render(request, 'html/table_basic.html', params)
+    return render(request, 'html/message_table.html', params)
 
 
 @is_login
@@ -196,7 +254,7 @@ def pie_chart(request):
               'shopping_records': None,
               'week_cost': None,
               'week_income': None, }
-    return render(request, 'html/chart_pie.html', params)
+    return render(request, 'html/message_chart.html', params)
 
 
 def write_DB(request):  # 写入数据库

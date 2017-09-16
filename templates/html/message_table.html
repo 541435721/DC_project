@@ -1,0 +1,40 @@
+{% extends 'user.html' %}
+{% block title %}
+    基本表格
+{% endblock %}
+{% block right_content %}
+    <div class="content-page" style="height: 800px;">
+        <!-- Start content -->
+        <div class="content">
+            <!-- row start -->
+            <div class="am-g">
+
+                <!-- col start -->
+                <div class="am-u-md-12">
+                    <div class="card-box">
+                        <table class="am-table  am-table-striped">
+                            <thead>
+                            <tr>
+                                <th>发帖时间</th>
+                                <th>发帖量</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for record in messages %}
+                                <tr>
+                                    <td>{{ record.time|date:"Y年 m月d日" }}</td>
+                                    <td>{{ record.mount }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- col end -->
+            </div>
+            <!-- row end -->
+
+
+        </div>
+    </div>
+{% endblock %}

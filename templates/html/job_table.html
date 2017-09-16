@@ -1,0 +1,61 @@
+{% extends 'user.html' %}
+{% block title %}
+    就业信息
+{% endblock %}
+{% block right_content %}
+    <div class="content-page" style="height: 800px;">
+        <!-- Start content -->
+        <div class="content">
+            <!-- row start -->
+            <div class="am-g">
+
+                <!-- col start -->
+                <div class="am-u-md-6">
+                    <div class="card-box">
+                        <table class="am-table  am-table-striped">
+                            <thead>
+                            <tr>
+                                <th>薪水级别</th>
+                                <th>人数</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for record in salary %}
+                                <tr>
+                                    <td>{{ record.salary }}</td>
+                                    <td>{{ record.salary__count }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="am-u-md-6">
+                    <div class="card-box">
+                        <table class="am-table  am-table-striped">
+                            <thead>
+                            <tr>
+                                <th>就业去向</th>
+                                <th>人数</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for record in address %}
+                                <tr>
+                                    <td>{{ record.address }}</td>
+                                    <td>{{ record.address__count }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- col end -->
+            </div>
+            <!-- row end -->
+
+
+        </div>
+    </div>
+{% endblock %}

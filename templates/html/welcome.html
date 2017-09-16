@@ -1,0 +1,74 @@
+{% extends 'user.html' %}
+{% load static %}
+{% block title %}
+    欢迎登陆
+{% endblock %}
+
+{% block import_script %}
+
+{% endblock %}
+
+{% block right_content %}
+    <div class="content-page">
+        <!-- Start content -->
+        <div style="height: 400px">
+            <br>
+            <p>欢迎{{ user_name }}访问</p>
+        </div>
+        <div class="am-g">
+            <div class="am-u-md-6">
+                <!-- 折线图堆叠 -->
+                <div class="card-box">
+                    <div id="pie1" style="width: 100%;height: 400px;"></div>
+                </div>
+            </div>
+
+            <div class="am-u-md-6">
+                <!-- 堆叠区域图  -->
+                <div class="card-box">
+                    <div id="pie2" style="width: 100%;height: 400px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block  inport_script2 %}
+{% endblock %}
+
+{% block js %}
+    <script>(function (T, h, i, n, k, P, a, g, e) {
+        g = function () {
+            P = h.createElement(i);
+            a = h.getElementsByTagName(i)[0];
+            P.src = k;
+            P.charset = "utf-8";
+            P.async = 1;
+            a.parentNode.insertBefore(P, a)
+        };
+        T["ThinkPageWeatherWidgetObject"] = n;
+        T[n] || (T[n] = function () {
+            (T[n].q = T[n].q || []).push(arguments)
+        });
+        T[n].l = +new Date();
+        if (T.attachEvent) {
+            T.attachEvent("onload", g)
+        } else {
+            T.addEventListener("load", g, false)
+        }
+    }(window, document, "script", "tpwidget", "//widget.seniverse.com/widget/chameleon.js"))</script>
+    <script>tpwidget("init", {
+        "flavor": "bubble",
+        "location": "WX4FBXXFKE4F",
+        "geolocation": "enabled",
+        "position": "top-right",
+        "margin": "10px 10px",
+        "language": "zh-chs",
+        "unit": "c",
+        "theme": "chameleon",
+        "uid": "U3CD86694D",
+        "hash": "6b442f473a2e941016ff1d96b6fc5100"
+    });
+    tpwidget("show");</script>
+{% endblock %}

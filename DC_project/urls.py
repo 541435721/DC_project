@@ -30,5 +30,12 @@ urlpatterns = [
     url(r'^line_chart/', views.line_chart, name='line_chart'),
     url(r'^columnar_chart/', views.columnar_chart, name='columnar_chart'),
     url(r'^pie_chart/', views.pie_chart, name='pie_chart'),
+    url(r'^welcome/', views.welcome, name='welcome'),
+    url(r'^message_chart/', views.message_chart, name='message_chart'),
+    url(r'^message_table/', views.message_table, name='message_table'),
+    url(r'^job_table/', views.job_table, name='job_table'),
+    url(r'^job_chart/', views.job_chart, name='job_chart'),
+    url(r'^shop_table/', views.shop_table, name='shop_table'),
+    url(r'^shop_chart/', views.shop_chart, name='shop_chart'),
 
 ]
