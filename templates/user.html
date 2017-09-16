@@ -21,28 +21,28 @@
 </head>
 <body>
 {% block head %}
-<!-- Begin page -->
-<header class="am-topbar am-topbar-fixed-top">
-    <div class="am-topbar-left am-hide-sm-only">
-        <a href="{% url 'welcome' %}" class="logo"><span>{{ user_name }}<span></span></span><i
-                class="zmdi zmdi-layers"></i></a>
-    </div>
+    <!-- Begin page -->
+    <header class="am-topbar am-topbar-fixed-top">
+        <div class="am-topbar-left am-hide-sm-only">
+            <a href="{% url 'welcome' %}" class="logo"><span>{{ user_name }}<span></span></span><i
+                    class="zmdi zmdi-layers"></i></a>
+        </div>
 
-    <div class="contain">
-        <ul class="am-nav am-navbar-nav am-navbar-left">
+        <div class="contain">
+            <ul class="am-nav am-navbar-nav am-navbar-left">
 
-            <li><h4 class="page-title">
-                {% block title %}
-                    基本信息
-                {% endblock %}
-            </h4></li>
-        </ul>
+                <li><h4 class="page-title">
+                    {% block title %}
+                        基本信息
+                    {% endblock %}
+                </h4></li>
+            </ul>
 
-        <ul class="am-nav am-navbar-nav am-navbar-right">
-        </ul>
-    </div>
-</header>
-<!-- end page -->
+            <ul class="am-nav am-navbar-nav am-navbar-right">
+            </ul>
+        </div>
+    </header>
+    <!-- end page -->
 {% endblock %}
 
 <div class="admin">
@@ -153,9 +153,18 @@
     <script type="text/javascript" src="{% static 'user_center/js/amazeui.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'user_center/js/app.js' %}"></script>
     <script type="text/javascript" src="{% static 'user_center/js/blockUI.js' %}"></script>
-    <script type="text/javascript" src="{% static 'user_center/js/charts/china.js' %}"></script>
     <script type="text/javascript" src="{% static 'user_center/js/charts/echarts.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'user_center/js/charts/indexChart.js' %}"></script>
+    <script type="text/javascript" src="{% static 'user_center/js/charts/china.js' %}"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts-all-3.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+    <script type="text/javascript"
+            src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
+    <script type="text/javascript"
+            src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
 {% endblock %}
 
 </body>
