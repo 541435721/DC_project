@@ -1,0 +1,68 @@
+{% extends 'user.html' %}
+{% block title %}
+    消费信息
+{% endblock %}
+{% block right_content %}
+    <div class="content-page" style="height: 800px;">
+        <!-- Start content -->
+        <div class="content">
+            <!-- row start -->
+            <div class="am-g">
+
+                <!-- col start -->
+                <div class="am-u-md-6">
+                    <div class="card-box">
+                        <table class="am-table  am-table-striped">
+                            <thead>
+                            <tr>
+                                <th>消费地点</th>
+                                <th>消费方式</th>
+                                <th>消费金额</th>
+                                <th>消费时间</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for record in shop_records %}
+                                <tr>
+                                    <td>{{ record.consume_address }}</td>
+                                    <td>{{ record.consume_type }}</td>
+                                    <td>{{ record.price }}</td>
+                                    <td>{{ record.shopping_time|date:"Y年 m月d日  g:i:s" }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="am-u-md-6">
+                    <div class="card-box">
+                        <table class="am-table  am-table-striped">
+                            <thead>
+                            <tr>
+                                <th>收入方式</th>
+                                <th>收入金额</th>
+                                <th>收入时间</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for record in income_records %}
+                                <tr>
+                                    <td>{{ record.consume_type }}</td>
+                                    <td>{{ record.price }}</td>
+                                    <td>{{ record.shopping_time|date:"Y年 m月d日  g:i:s" }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- col end -->
+            </div>
+            <!-- row end -->
+
+
+        </div>
+    </div>
+{% endblock %}
+

@@ -9,6 +9,13 @@ import datetime
 from django.db.models import Avg, Sum, Count, Aggregate
 from DC import models
 import json
+from django.views.decorators.cache import cache_page
+from django.core.cache import cache
+
+shopping = ['POS消费', '水控消费', '车载消费', '余额转移', '支付交易', '圈存转账', '喜付电控转账', 'POS消费冲正', '交易冲正']
+income = ['支付宝充值', '支付领取', '卡充值', '喜付下发', '加卡余额', '换卡加值', '卡充值冲正', '圈存补帐', '易支付充值', 'POS充值']
+operations = ['卡冻结', '锁卡流水', '卡挂失', '卡解挂', '更新卡信息', '修改卡有效期', '卡片开户', '消费失败', '卡补办', '卡片销户', '坏卡登记添加', '卡密码修改',
+              '换卡申请', '换卡', '卡解冻', '坏卡登记删除', '修改消费限额', ]
 
 
 def is_login(func):
@@ -71,6 +78,7 @@ def logout(request):
 
 
 @is_login
+@cache_page(60 * 15)
 def user(request):
     params = {'user_name': request.user,
               'income': 0,
@@ -143,6 +151,7 @@ def welcome(request):
 
 
 @is_login
+@cache_page(60 * 15)
 def message_table(request):
     params = {'user_name': request.user,
               'messages': None}
@@ -152,6 +161,7 @@ def message_table(request):
 
 
 @is_login
+@cache_page(60 * 15)
 def message_chart(request):
     params = {'user_name': request.user,
               }
@@ -166,6 +176,7 @@ def message_chart(request):
 
 
 @is_login
+@cache_page(60 * 15)
 def job_table(request):
     params = {'user_name': request.user,
               'address': None,
@@ -180,6 +191,7 @@ def job_table(request):
 
 
 @is_login
+@cache_page(60 * 15)
 def job_chart(request):
     params = {'user_name': request.user,
               }
@@ -413,17 +425,112 @@ def job_chart(request):
 
 
 @is_login
+@cache_page(60 * 15)
 def shop_table(request):
     params = {'user_name': request.user,
-              }
-    return render(request, 'html/message_table.html', params)
+              'shop_records': None}
+    costs = cache.get('costs')
+    if not costs:
+        costs = models.Cost.objects.filter(user_id=request.user)
+        cache.set('costs', costs, 60 * 15)
+
+    all_shopping = costs.filter(consume_type__in=shopping)
+    all_income = costs.filter(consume_type__in=income)
+
+    params['shop_records'] = all_shopping
+    params['income_records'] = all_income
+    # cache.set('costs', costs, 60 * 15)
+
+    return render(request, 'html/shop_table.html', params)
 
 
 @is_login
+@cache_page(60 * 15)
 def shop_chart(request):
     params = {'user_name': request.user,
               }
-    return render(request, 'html/message_chart.html', params)
+    costs = cache.get('costs')
+    if not costs:
+        costs = models.Cost.objects.filter(user_id=request.user)
+        cache.set('costs', costs, 60 * 15)
+    shopping_records = []
+    income_records = []
+    all_shopping = costs.filter(consume_type__in=shopping)
+    all_income = costs.filter(consume_type__in=income)
+    if costs:
+        params['all_costs'] = round(all_shopping.aggregate(Sum('price'))['price__sum'], 2)
+        params['income'] = round(all_income.aggregate(Sum('price'))['price__sum'], 2)
+        for item in shopping:
+            try:
+                mount = round(all_shopping.filter(consume_type=item).aggregate(Sum('price'))['price__sum'], 2)
+                shopping_records.append([item, mount])
+            except:
+                shopping_records.append([item, 0])
+        params['shopping_records'] = json.dumps(shopping_records)
+
+        for item in income:
+            try:
+                mount = round(all_shopping.filter(consume_type=item).aggregate(Sum('price'))['price__sum'], 2)
+                income_records.append([item, mount])
+            except:
+                income_records.append([item, 0])
+        params['income_records'] = json.dumps(shopping_records)
+
+    # today = now().date()
+    today = datetime.date(2017, 5, 5)
+
+    weekends_index = today.weekday()
+
+    week_cost = [0] * 7
+    week_income = [0] * 7
+    count = 0
+    for i in range(weekends_index, -1, -1):
+        start = today - timedelta(days=i)
+        end = start + timedelta(days=1)
+        today_costs = all_shopping.filter(shopping_time__range=(start, end))
+        # print(today_costs)
+        today_income = all_income.filter(shopping_time__range=(start, end))
+
+        if today_costs:
+            try:
+                week_cost[count] = round(today_costs.aggregate(Sum('price'))['price__sum'], 2)
+            except:
+                pass
+        if today_income:
+            try:
+                week_income[count] = round(today_income.aggregate(Sum('price'))['price__sum'], 2)
+            except:
+                pass
+
+        count += 1
+    params['today_costs'] = week_cost[weekends_index]
+    params['today_income'] = week_income[weekends_index]
+    params['week_income'] = json.dumps(week_income)
+    params['week_cost'] = json.dumps(week_cost)
+
+    return render(request, 'html/shop_chart.html', params)
+
+
+@is_login
+@cache_page(60 * 15)
+def reading_table(request):
+    params = {'user_name': request.user,
+              }
+    records = models.Borrow_records.objects.filter(user_id=request.user).order_by('time').reverse()
+    params['borrow'] = records
+    rank = models.Borrow_records.objects.values('user_id').annotate(Count('user_id')).order_by(
+        'user_id__count').reverse()[0:10]
+    params['rank'] = rank
+    return render(request, 'html/book_table.html', params)
+
+
+@is_login
+@cache_page(60 * 15)
+def reading_chart(request):
+    params = {'user_name': request.user,
+              }
+
+    return render(request, 'html/book_chart.html.html', params)
 
 
 @is_login

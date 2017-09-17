@@ -106,14 +106,26 @@
                         </ul>
                     </li>
                     <li class="admin-parent">
-                        <a class="am-cf" data-am-collapse="{target: '#collapse-nav4'}"><i class="am-icon-money"
-                                                                                          aria-hidden="true"></i> 消费信息
+                        <a class="am-cf" data-am-collapse="{target: '#collapse-nav4'}"><i class="am-icon-book"
+                                                                                          aria-hidden="true"></i> 借阅信息
                             <span
                                     class="am-icon-angle-right am-fr am-margin-right"></span></a>
                         <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav4">
-                            <li><a href="{% url 'job_table' %}" class="am-cf"><span
+                            <li><a href="{% url 'reading_table' %}" class="am-cf"><span
                                     class="am-icon-table"></span><span> 表格</span></a></li>
-                            <li><a href="{% url 'job_chart' %}" class="am-cf"><span
+                            <li><a href="{% url 'reading_chart' %}" class="am-cf"><span
+                                    class="am-icon-line-chart"></span><span> 图表</span></a></li>
+                        </ul>
+                    </li>
+                    <li class="admin-parent">
+                        <a class="am-cf" data-am-collapse="{target: '#collapse-nav5'}"><i class="am-icon-money"
+                                                                                          aria-hidden="true"></i> 消费信息
+                            <span
+                                    class="am-icon-angle-right am-fr am-margin-right"></span></a>
+                        <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav5">
+                            <li><a href="{% url 'shop_table' %}" class="am-cf"><span
+                                    class="am-icon-table"></span><span> 表格</span></a></li>
+                            <li><a href="{% url 'shop_chart' %}" class="am-cf"><span
                                     class="am-icon-line-chart"></span><span> 图表</span></a></li>
                         </ul>
                     </li>
