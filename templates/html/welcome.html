@@ -9,28 +9,72 @@
 {% endblock %}
 
 {% block right_content %}
+    <!-- Start right Content here -->
     <div class="content-page">
         <!-- Start content -->
-        <div style="height: 400px">
-            <br>
-            <p>欢迎{{ user_name }}访问</p>
-        </div>
-        <div class="am-g">
-            <div class="am-u-md-6">
-                <!-- 折线图堆叠 -->
-                <div class="card-box">
-                    <div id="pie1" style="width: 100%;height: 400px;"></div>
+        <div style="height: 40px"></div>
+        <div class="content">
+            <!-- row start -->
+            <div class="am-g">
+                <!-- col start -->
+                <div class="am-u-md-12">
+                    <div class="card-box" style="height: 400px">
+                        {% if reward %}
+                            <p>
+                                恭喜您，您获得过
+                                {% for i in reward %}
+                                    {{ i.level }}等
+                                {% endfor %}
+                                奖学金
+                            </p>
+                        {% else %}
+                            <p>很遗憾，您从未获得过奖学金！再接再厉!</p>
+                        {% endif %}
+                    </div>
                 </div>
+                <!-- col end -->
+            </div>
+            <!-- row end -->
+            <div class="am-g">
+                <!-- Row start -->
+
+                {% for key,value in scores.items %}
+                    <div class="am-u-sm-{{ width }}">
+                        <div class="card-box">
+                            <!-- col start -->
+                            <table class="am-table" style="height: 500px">
+                                <thead>
+                                <tr>
+                                    <th>学年</th>
+                                    <th>学期</th>
+                                    <th>课程编号</th>
+                                    <th>成绩</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for i in value %}
+                                    <tr>
+                                        <td>{{ key }}</td>
+                                        {% for x in i %}
+                                            <td>{{ x }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+                            <!-- col end -->
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <!-- Row end -->
             </div>
 
-            <div class="am-u-md-6">
-                <!-- 堆叠区域图  -->
-                <div class="card-box">
-                    <div id="pie2" style="width: 100%;height: 400px;"></div>
-                </div>
-            </div>
+
         </div>
     </div>
+    <!-- end right Content here -->
 
 {% endblock %}
 

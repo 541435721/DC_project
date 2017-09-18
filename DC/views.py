@@ -147,6 +147,20 @@ def welcome(request):
     params = {'user_name': request.user,
               }
 
+    params['reward'] = models.Schoolarship.objects.filter(user_id=request.user)
+
+    scores = models.Scores.objects.filter(user_id=request.user)
+    years = list(scores.values('year').distinct().values_list('year'))
+    scores_dic = {}
+    for year in years:
+        record = list(scores.filter(year=year[0]).order_by('semester').values_list('semester', 'course_id', 'score'))
+        scores_dic[year[0]] = record
+
+    params['scores'] = scores_dic
+    params['width'] = 12 // len(scores_dic)
+
+
+
     return render(request, 'html/welcome.html', params)
 
 
@@ -501,8 +515,8 @@ def shop_chart(request):
                 week_income[count] = round(today_income.aggregate(Sum('price'))['price__sum'], 2)
             except:
                 pass
-
         count += 1
+
     params['today_costs'] = week_cost[weekends_index]
     params['today_income'] = week_income[weekends_index]
     params['week_income'] = json.dumps(week_income)
@@ -518,9 +532,12 @@ def reading_table(request):
               }
     records = models.Borrow_records.objects.filter(user_id=request.user).order_by('time').reverse()
     params['borrow'] = records
-    rank = models.Borrow_records.objects.values('user_id').annotate(Count('user_id')).order_by(
+    rank1 = models.Borrow_records.objects.values('user_id').annotate(Count('user_id')).order_by(
         'user_id__count').reverse()[0:10]
-    params['rank'] = rank
+    rank2 = models.Borrow_records.objects.values('book_id').annotate(Count('book_id')).order_by(
+        'book_id__count').reverse()[0:10]
+    params['rank_reader'] = rank1
+    params['rank_books'] = rank2
     return render(request, 'html/book_table.html', params)
 
 
@@ -529,8 +546,28 @@ def reading_table(request):
 def reading_chart(request):
     params = {'user_name': request.user,
               }
+    records = models.Borrow_records.objects.filter(user_id=request.user)
+    # today = now().date()
+    today = datetime.date(2012, 10, 13)
 
-    return render(request, 'html/book_chart.html.html', params)
+    weekends_index = today.weekday()
+
+    count = 0
+
+    week_borrow = [0] * 7
+    for i in range(weekends_index, -1, -1):
+        start = today - timedelta(days=i)
+        end = start + timedelta(days=1)
+        today_read = records.filter(time__range=(start, end))
+        if today_read:
+            try:
+                week_borrow[count] = today_read.aggregate(Count('book_id'))['book_id__count']
+            except:
+                pass
+        count += 1
+
+    params['week_read'] = json.dumps(week_borrow)
+    return render(request, 'html/book_chart.html', params)
 
 
 @is_login
