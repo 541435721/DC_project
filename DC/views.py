@@ -11,6 +11,7 @@ from DC import models
 import json
 from django.views.decorators.cache import cache_page
 from django.core.cache import cache
+import re
 
 shopping = ['POS消费', '水控消费', '车载消费', '余额转移', '支付交易', '圈存转账', '喜付电控转账', 'POS消费冲正', '交易冲正']
 income = ['支付宝充值', '支付领取', '卡充值', '喜付下发', '加卡余额', '换卡加值', '卡充值冲正', '圈存补帐', '易支付充值', 'POS充值']
@@ -159,8 +160,6 @@ def welcome(request):
     params['scores'] = scores_dic
     params['width'] = 12 // len(scores_dic)
 
-
-
     return render(request, 'html/welcome.html', params)
 
 
@@ -201,6 +200,18 @@ def job_table(request):
     records2 = models.Job.objects.exclude(salary=None).values('salary').annotate(Count('salary'))
     params['address'] = records1
     params['salary'] = records2
+    user_job = models.Job.objects.get(user_id=request.user)
+    if user_job and user_job.address:
+        params['columns'] = 1
+        city = user_job.address.split('-')
+        houses = models.House.objects.filter(city__contains=city[1][:-1])
+        if houses:
+            params['Houses'] = houses
+        else:
+            params['columns'] = 0
+    else:
+        params['columns'] = 0
+
     return render(request, 'html/job_table.html', params)
 
 
@@ -777,8 +788,47 @@ def write_DB(request):  # 写入数据库
     #             pass
     #         count += 1
 
-    records = models.Students.objects.values('user_id')
-    for i in records:
-        User.objects.create_user(username=i['user_id'], password='123')
+    # records = models.Students.objects.values('user_id')
+    # for i in records:
+    #     User.objects.create_user(username=i['user_id'], password='123')
+
+    # with open('static/链家的数据汇总2017-09-03.txt', 'r') as file:
+    #     records = file.readlines()
+    #     count = 0
+    #     for i in records:
+    #         if count == 0:
+    #             count += 1
+    #             continue
+    #         record = i.split('\t')
+    #         try:
+    #             Id_record = models.House(
+    #                 name=record[0],
+    #                 type=record[1],
+    #                 price=record[2],
+    #                 features=record[3],
+    #                 city=record[4],
+    #                 address=record[5],
+    #                 sale_address=record[6],
+    #                 developer=record[7],
+    #                 building_type=record[8],
+    #                 green_ratio=record[9],
+    #                 square=record[10],
+    #                 Volume_ratio=record[11],
+    #                 building_square=record[12],
+    #                 owner=record[13],
+    #                 property_right_years=record[14],
+    #                 estate_type=record[15],
+    #                 property_company=record[16],
+    #                 parking_space_ratio=record[17],
+    #                 property_fee=record[18],
+    #                 heating_mode=record[19],
+    #                 water_supply_mode=record[20],
+    #                 power_supply_mode=record[21]
+    #             )
+    #             Id_record.save()
+    #         except Exception as e:
+    #             print(e)
+    #         count += 1
+    #         print(count)
 
     return redirect('/')

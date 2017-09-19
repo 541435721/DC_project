@@ -6,55 +6,155 @@
     <div class="content-page" style="height: 800px;">
         <!-- Start content -->
         <div class="content">
-            <!-- row start -->
-            <div class="am-g">
 
-                <!-- col start -->
-                <div class="am-u-md-6">
-                    <div class="card-box">
-                        <table class="am-table  am-table-striped">
-                            <thead>
-                            <tr>
-                                <th>薪水级别</th>
-                                <th>人数</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for record in salary %}
+            {% if columns %}
+                <!-- row start -->
+                <div class="am-g">
+
+                    <!-- col start -->
+                    <div class="am-u-md-2">
+                        <div class="card-box">
+                            <table class="am-table  am-table-striped">
+                                <thead>
                                 <tr>
-                                    <td>{{ record.salary }}</td>
-                                    <td>{{ record.salary__count }}</td>
+                                    <th>薪水级别</th>
+                                    <th>人数</th>
                                 </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                {% for record in salary %}
+                                    <tr>
+                                        <td>{{ record.salary }}</td>
+                                        <td>{{ record.salary__count }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-
-                <div class="am-u-md-6">
-                    <div class="card-box">
-                        <table class="am-table  am-table-striped">
-                            <thead>
-                            <tr>
-                                <th>就业去向</th>
-                                <th>人数</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for record in address %}
+                    <div class="am-u-md-6">
+                        <div class="card-box">
+                            <table class="am-table  am-table-striped">
+                                <thead>
                                 <tr>
-                                    <td>{{ record.address }}</td>
-                                    <td>{{ record.address__count }}</td>
+                                    <th>
+                                        <div style="font-size: 1mm">楼盘名称</div>
+                                    </th>
+                                    <th>
+                                        <div style="font-size: 1mm">参考价格</div>
+                                    </th>
+                                    <th>
+                                        <div style="font-size: 1mm">物业费</div>
+                                    </th>
+                                    <th>
+                                        <div style="font-size: 1mm">供水方式</div>
+                                    </th>
+                                    <th>
+                                        <div style="font-size: 1mm">供电方式</div>
+                                    </th>
+                                    <th>
+                                        <div style="font-size: 1mm">地址</div>
+                                    </th>
                                 </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                {% for record in Houses %}
+                                    <tr>
+                                        <td>
+                                            <div style="font-size: 1mm">{{ record.name }}</div>
+                                        </td>
+                                        <td>
+                                            <div style="font-size: 1mm">{{ record.price }}</div>
+                                        </td>
+                                        <td>
+                                            <div style="font-size: 1mm">{{ record.property_fee }}</div>
+                                        </td>
+                                        <td>
+                                            <div style="font-size: 1mm">{{ record.water_supply_mode }}</div>
+                                        </td>
+                                        <td>
+                                            <div style="font-size: 1mm">{{ record.power_supply_mode }}</div>
+                                        </td>
+                                        <td>
+                                            <div style="font-size: 1mm">{{ record.address }}</div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
+                    <div class="am-u-md-4">
+                        <div class="card-box">
+                            <table class="am-table  am-table-striped">
+                                <thead>
+                                <tr>
+                                    <th>就业去向</th>
+                                    <th>人数</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for record in address %}
+                                    <tr>
+                                        <td>{{ record.address }}</td>
+                                        <td>{{ record.address__count }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- col end -->
                 </div>
-                <!-- col end -->
-            </div>
-            <!-- row end -->
-
+                <!-- row end -->
+            {% else %}
+                <!-- row start -->
+                <div class="am-g">
+                    <!-- col start -->
+                    <div class="am-u-md-6">
+                        <div class="card-box">
+                            <table class="am-table  am-table-striped">
+                                <thead>
+                                <tr>
+                                    <th>薪水级别</th>
+                                    <th>人数</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for record in salary %}
+                                    <tr>
+                                        <td>{{ record.salary }}</td>
+                                        <td>{{ record.salary__count }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="am-u-md-6">
+                        <div class="card-box">
+                            <table class="am-table  am-table-striped">
+                                <thead>
+                                <tr>
+                                    <th>就业去向</th>
+                                    <th>人数</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for record in address %}
+                                    <tr>
+                                        <td>{{ record.address }}</td>
+                                        <td>{{ record.address__count }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- col end -->
+                </div>
+                <!-- row end -->
+            {% endif %}
 
         </div>
     </div>
